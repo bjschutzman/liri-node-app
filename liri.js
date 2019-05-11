@@ -1,13 +1,34 @@
-require("dotenv").config();
-var axios = require("axios")
+// requires .env file
+var Dotenv = require("dotenv").config();
+var Axios = require("axios");
+var Moment = require("moment");
+var fs = require("fs");
+
+// stores keys.js in variable
 var keys = require("./keys.js");
 
-// omdb variables
-var movieName = process.argv[2];
-var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+require
+// requires spotify and sets up new contructor
+var Spotify = require('node-spotify-api');
+// var spotify = new Spotify(keys.spotify);
 
-// bands in town var
-var bandName = process.argv[2]
-var bandsInTown ="https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-// spotify variables
-var spotify = new Spotify(keys.spotify);
+var nodeArg  = process.argv
+
+var userInput = ""
+
+
+// for (var i = 3; i < nodeArg.length; i++){
+
+// }
+
+spotify
+  .search({ 
+    type: 'track',
+    query: userInput })
+    
+  .then(function(response) {
+    console.log(response);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
