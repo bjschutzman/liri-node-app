@@ -19,8 +19,8 @@ var userInput = process.argv.splice(3).join(" ");
 
 
 // appends user input search to searchlog.txt
-function append(){
-  fs.appendFile("log.txt", userInput + ", ", function(err){});
+function append(foo){
+  fs.appendFile("log.txt", "\r\n\r\n" + foo, function(err){});
 }
 
 
@@ -42,12 +42,20 @@ function spotifyThis() {
       console.log("Album: " + album);
       console.log("Preview Link: " + link);
       console.log("--------Song Search-------\n");
+      // add search results to log.txt
+      append("--------Song Search-------\n");
+      append("Song: " + search);
+      append("Artist: " + artist);
+      append("Album: " + album);
+      append("Preview Link: " + link);
+      append("--------Song Search-------\n");
+      
     })
     // catches errors 
     .catch(function(err) {
       console.log(err);
     });
-  append();
+ 
 }
 
 
@@ -67,8 +75,14 @@ function concertThis() {
       console.log(
         "Event Date: " + month + "/" + day + "/" + year + "\n");
       console.log("--------Concert Search-------\n");
+      
+      // adds searchappend
+      append("--------Concert Search-------\n");
+      append("Venue: " + concert.venue.name + "\n");
+      append("Location: " + concert.venue.city + ", " + concert.venue.region + "\n" );
+      append("Event Date: " + month + "/" + day + "/" + year + "\n");
+      append("--------Concert Search-------\n");
     });
-  append();
 }
 
 
@@ -94,8 +108,19 @@ function movieThis() {
     console.log("Plot: " + movie.Plot);
     console.log("Actors: " + movie.Actors);
     console.log("--------Movie Search-------\n");
+
+    // adds results to log.txt
+    append("--------Movie Search-------\n");
+    append("Movie Title: " + movie.Title);
+    append("Year: " + movie.Year);
+    append("IMDB:Rating: " + movie.imdbRating);
+    append("Rotten Tomatoes Rating: " + movie.Ratings[1].Value);
+    append("Conutry: " + movie.Country);
+    append("Language: " + movie.Language);
+    append("Plot: " + movie.Plot);
+    append("Actors: " + movie.Actors);
+    append("--------Movie Search-------\n");
     });
-  append();
 }
 
 // takes in all of the inputs and and calls the correct functions
