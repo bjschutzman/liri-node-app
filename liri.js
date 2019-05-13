@@ -23,28 +23,10 @@ function append(){
   fs.appendFile("log.txt", userInput + ", ", function(err){});
 }
 
-// function which searches a concert and returns venue, location, and date.
-function concertThis() {
-  axios
-    .get("https://rest.bandsintown.com/artists/" + search +"/events?app_id=codingbootcamp")
-    .then(function(response) {
-      var concert = response.data[0];
-      console.log("Venue: " + concert.venue.name + "\n");
-      console.log("Location: " + concert.venue.city + ", " + concert.venue.region + "\n" );
-      var datetime = concert.datetime;
-      var year = datetime.substring(0, 4);
-      var month = datetime.substring(5, 7);
-      var day = datetime.substring(8, 10);
-      console.log(
-        "Date of the Event: " + month + "/" + day + "/" + year + "\n"
-      );
-      console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-    });
-  append();
-}
+
 
 // spotify function
-function spotifyThis(){
+function spotifyThis() {
   spotify
   // takes in parameters for search
   .search({ type: "track", query: userInput, limit: 1 })
@@ -68,10 +50,34 @@ function spotifyThis(){
   append();
 }
 
+
+// function which searches a concert and returns venue, location, and date.
+function concertThis() {
+  axios
+      axios.get("https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
+      .then(function(response) {
+      var concert = response.data[0];
+      var datetime = concert.datetime;
+      var year = datetime.substring(0, 4);
+      var month = datetime.substring(5, 7);
+      var day = datetime.substring(8, 10);
+      console.log("--------Concert Search-------\n");
+      console.log("Venue: " + concert.venue.name + "\n");
+      console.log("Location: " + concert.venue.city + ", " + concert.venue.region + "\n" );
+      console.log(
+        "Event Date: " + month + "/" + day + "/" + year + "\n");
+      console.log("--------Concert Search-------\n");
+    });
+  append();
+}
+
+
+
+
 // omdb movie search function
 function movieThis() {
   axios
-    .get("http://www.omdbapi.com/?apikey=trilogy&t=" + search)
+    .get("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy")
     .then(function(response) {
     
     // var to store movie date
@@ -81,8 +87,8 @@ function movieThis() {
     console.log("--------Movie Search-------\n");
     console.log("Movie Title: " + movie.Title);
     console.log("Year: " + movie.Year);
-    console.log(movie.Ratings[0].Source + ": " + movie.Ratings[0].Value);
-    console.log(movie.Ratings[1].Source + ": " + movie.Ratings[1].Value);
+    console.log("IMDB:Rating: " + movie.imdbRating);
+    console.log("Rotten Tomatoes Rating: " + movie.Ratings[1].Value);
     console.log("Conutry: " + movie.Country);
     console.log("Language: " + movie.Language);
     console.log("Plot: " + movie.Plot);
@@ -101,6 +107,10 @@ function liri(){
     spotifyThis()
   }
 
+  if (search === "concert-this"){
+    concertThis()
+  }
+
   if (search === "movie-this"){
     if (userInput === ''){
     search = "Mr. Nobody";
@@ -108,22 +118,17 @@ function liri(){
     movieThis()
   }
 
-  if (search === "concert-this"){
-    if (userInput === ""){
-      console.log("Please enter an input")
-    }
-    concertThis()
-  }
+  
 
   if (search === "do-what-it-says"){
-    fs.readFile("random.txt" + "utf8" + function(error, data){
+    fs.readFile("random.txt", "utf8", function(error, data){
       console.log(data);
 
       var file = data.split(",")
       search = file[0];
       userInput = file[1];
-      liri()
-    })
+      liri();
+    });
   }
 }
 liri();
